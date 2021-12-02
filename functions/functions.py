@@ -1,6 +1,7 @@
 import modin.pandas as md
 import pandas as pd
 from pandas.tseries.offsets import *
+import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib_inline.backend_inline import set_matplotlib_formats
@@ -154,3 +155,13 @@ def pivot_and_plot_returns(df,quantiles):
     plt.title('Cumulative Returns Before Leverage')
     plt.legend()
     plt.show()
+    
+
+def plot_seasonality(df, ret):
+    df = pd.DataFrame(df).reset_index()
+    df['year'] = pd.DatetimeIndex(df['date']).year
+    df['month'] = pd.DatetimeIndex(df['date']).month
+    df = df.pivot(index='month', columns='year', values=ret)
+    ax = sns.heatmap(df,linewidths=.2)
+    plt.show()
+    
